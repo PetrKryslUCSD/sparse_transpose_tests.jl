@@ -9,7 +9,7 @@ include("csr_sparse_transpose.jl")
 ################################################################################
 M = 2 * 100_000 + 133
 N = M
-sparsity = 1e-6
+sparsity = 10  / M
 
 @info "Matrix M = $M by N = $N, sparsity = $sparsity"
 Ac = sprand(M, N, sparsity);
