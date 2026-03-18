@@ -11,8 +11,8 @@ M = 2 * 100_000 + 133
 N = M
 sparsity = 10  / M
 
-@info "Matrix M = $M by N = $N, sparsity = $sparsity"
 Ac = sprand(M, N, sparsity);
+@info "Matrix M = $M by N = $N, sparsity = $sparsity, nnz = $(nnz(Ac))"
 Ar = sparsecsr(Ac);
 
 check = false
