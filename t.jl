@@ -13,12 +13,12 @@ sparsity = 10  / M
 
 Ac = sprand(M, N, sparsity);
 @info "Matrix M = $M by N = $N, sparsity = $sparsity, nnz = $(nnz(Ac))"
-Ar = sparsecsr(Ac);
+Ar = copy(sparsecsr(Ac));
 
 check = false
 
 Gc = GBMatrix(Ac); # GraphBLAS sparse CSC copy
-Gr = GBMatrix(sparsecsr(Ac)); # GraphBLAS sparse CSR copy
+Gr = GBMatrix(copy(sparsecsr(Ac))); # GraphBLAS sparse CSR copy
 
 if check
     @show norm(gbtranspose(Gc) - copy(transpose(Ac))) # check
