@@ -10,13 +10,13 @@ include("adjacencymatrix.jl")
 ################################################################################
 
 
-Ac = adjacencymatrix(4) # sparse adjacency matrix
+Ac = adjacencymatrix(5) # sparse adjacency matrix
 M, N = size(Ac)
-@info "Matrix M = $M by N = $N, nnz = $(nnz(Ac))"
+@info "Matrix M = $M by N = $N, nnz = $(nnz(Ac)), sparsity = $(nnz(Ac) / M / M)"
 Ar = copy(sparsecsr(Ac));
 @show typeof(Ac), typeof(Ar)
 
-check = !false
+check = false
 
 Gc = GBMatrix(Ac); # GraphBLAS sparse CSC copy
 # setstorageorder!(Gc, ColMajor())
