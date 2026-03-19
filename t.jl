@@ -18,8 +18,11 @@ M, N = size(Ac)
 Ar = copy(sparsecsr(Ac));
 @show typeof(Ac), typeof(Ar)
 
+# Turn this on to check that the matrices are correct.
 check = false
-GB = !false
+# Set to true to benchmark GraphBLAS transpose, requires SuiteSparseGraphBLAS.jl.
+# Right now there is something wrong with the GraphBLAS: I can't get it to generate a matrix at all.
+GB = false 
 
 
 @info "Benchmarking copy+transpose CSC"
