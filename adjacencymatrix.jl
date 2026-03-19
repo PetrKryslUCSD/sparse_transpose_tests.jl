@@ -1,9 +1,30 @@
 using FinEtools
 
-function adjacencymatrix(nrefine = 2)
+function mesh(nrefine = 2)
     R = 1.0
     fens, fes = H8sphere(R, nrefine)
+    return fens, fes
+end
+
+function adjacencymatrix(nrefine = 2)
+    fens, fes = mesh(nrefine)
     femm = FEMMBase(IntegDomain(fes, GaussRule(3, 2)))
-    A = connectionmatrix(femm, count(fens))
-    return A
+    return connectionmatrix(femm, count(fens))
+end
+
+function incidencematrix(nrefine = 2)
+    fens, fes = mesh(nrefine)
+    I = zeros(eltype(fes.conn[1]), nodesperelem(fes) * count(fes))
+    J = similar(I)
+    V = similar(I)
+    p = 1
+    for i in eachindex(fes)
+        for j in 1:nodesperelem(fes)
+            I[p] = i
+            J[p] = fes.conn[i][j]
+            V[p] = 1
+            p += 1
+        end
+    end
+    return sparse(I, J, V, count(fes), count(fens))
 end

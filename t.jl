@@ -10,26 +10,16 @@ include("adjacencymatrix.jl")
 ################################################################################
 
 
-Ac = adjacencymatrix(5) # sparse adjacency matrix
+Ac = incidencematrix(5) # sparse incidence matrix
+# Ac = adjacencymatrix(5) # sparse adjacency matrix
 M, N = size(Ac)
 @info "Matrix M = $M by N = $N, nnz = $(nnz(Ac)), sparsity = $(nnz(Ac) / M / M)"
 Ar = copy(sparsecsr(Ac));
 @show typeof(Ac), typeof(Ar)
 
 check = false
+GB = false
 
-Gc = GBMatrix(Ac); # GraphBLAS sparse CSC copy
-# setstorageorder!(Gc, ColMajor())
-gbset(Gc, :format, :bycol)
-Gr = GBMatrix(copy(sparsecsr(Ac))); # GraphBLAS sparse CSR copy
-# setstorageorder!(Gr, RowMajor())
-gbset(Gr, :format, :byrow)
-@show typeof(Gc), typeof(Gr)
-
-if check
-    @show norm(gbtranspose(Gc) - copy(transpose(Ac))) # check
-    @show norm(gbtranspose(Gr) - copy(transpose(Ar))) # check
-end
 
 @info "Benchmarking copy+transpose CSC"
 @btime copy(transpose($Ac));    # native Julia transpose
@@ -37,10 +27,26 @@ end
 @btime copy(transpose($Ar));    # native Julia transpose
 
 
-@info "Benchmarking gbtranspose CSC"
-@btime gbtranspose($Gc);      # GraphBLAS transpose
-@info "Benchmarking gbtranspose CSR"
-@btime gbtranspose($Gr);      # GraphBLAS transpose
+if GB
+    Gc = GBMatrix(Ac) # GraphBLAS sparse CSC copy
+    # setstorageorder!(Gc, ColMajor())
+    gbset(Gc, :format, :bycol)
+    Gr = GBMatrix(copy(sparsecsr(Ac))) # GraphBLAS sparse CSR copy
+    # setstorageorder!(Gr, RowMajor())
+    gbset(Gr, :format, :byrow)
+    @show typeof(Gc), typeof(Gr)
+    if check
+        @show norm(gbtranspose(Gc) - copy(transpose(Ac))) # check
+        @show norm(gbtranspose(Gr) - copy(transpose(Ar))) # check
+    end
+    @info "Benchmarking gbtranspose CSC"
+    @btime gbtranspose($Gc);      # GraphBLAS transpose
+    @info "Benchmarking gbtranspose CSR"
+    @btime gbtranspose($Gr);      # GraphBLAS transpose
+end
+
+
+
 
 C = sparsecsr(Ac)
 
