@@ -10,7 +10,7 @@ include("maketestmatrix.jl")
 ################################################################################
 
 # How big should the matrix be? 
-NREFINE = 5
+NREFINE = 6
 # Turn this on to check that the matrices are correct.
 check = false
 # Set to true to benchmark GraphBLAS transpose, requires SuiteSparseGraphBLAS.jl.
