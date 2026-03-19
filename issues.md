@@ -38,3 +38,9 @@ Platform Info:
 Threads: 1 default, 1 interactive, 1 GC (on 12 virtual cores)
 Environment:
   JULIA_DEPOT_PATH = C:/Users/pkonl/VSCode_Julia_portable/assets/.julia-1.12.4-depot
+
+
+There is something very wrong with this way of creating the test matrix:
+Gr = GBMatrix(copy(sparsecsr(Ac))); # GraphBLAS sparse CSR copy
+# setstorageorder!(Gr, RowMajor())
+gbset(Gr, :format, :byrow)
