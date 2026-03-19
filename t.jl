@@ -3,17 +3,16 @@ using SparseMatricesCSR
 using LinearAlgebra
 
 include("csr_sparse_transpose.jl")
+include("adjacencymatrix.jl")
 
 ################################################################################
 ################################################################################
 ################################################################################
 
-M = 2 * 10_000 + 133
-N = M
-sparsity = 10  / M
 
-Ac = sprand(M, N, sparsity);
-@info "Matrix M = $M by N = $N, sparsity = $sparsity, nnz = $(nnz(Ac))"
+Ac = adjacencymatrix(4) # sparse adjacency matrix
+M, N = size(Ac)
+@info "Matrix M = $M by N = $N, nnz = $(nnz(Ac))"
 Ar = copy(sparsecsr(Ac));
 @show typeof(Ac), typeof(Ar)
 
