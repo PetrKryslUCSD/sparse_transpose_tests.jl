@@ -3,14 +3,15 @@ using SparseMatricesCSR
 using LinearAlgebra
 
 include("csr_sparse_transpose.jl")
-include("adjacencymatrix.jl")
+include("maketestmatrix.jl")
 
 ################################################################################
 ################################################################################
 ################################################################################
 
 
-Ac = incidencematrix(5) # sparse incidence matrix
+Ac = diffusionmatrix(1) # sparse incidence matrix
+# Ac = incidencematrix(5) # sparse incidence matrix
 # Ac = adjacencymatrix(5) # sparse adjacency matrix
 M, N = size(Ac)
 @info "Matrix M = $M by N = $N, nnz = $(nnz(Ac)), sparsity = $(nnz(Ac) / M / M)"
@@ -18,7 +19,7 @@ Ar = copy(sparsecsr(Ac));
 @show typeof(Ac), typeof(Ar)
 
 check = false
-GB = false
+GB = !false
 
 
 @info "Benchmarking copy+transpose CSC"
